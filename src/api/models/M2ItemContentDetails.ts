@@ -1,0 +1,63 @@
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+
+import type { CodeDiscussionAddedFeedEvent } from './CodeDiscussionAddedFeedEvent';
+import type { CodeReviewDiscussionAddedFeedEvent } from './CodeReviewDiscussionAddedFeedEvent';
+import type { IssueAssigneeChangedDetails } from './IssueAssigneeChangedDetails';
+import type { IssueAttachmentsChangedDetails } from './IssueAttachmentsChangedDetails';
+import type { IssueChecklistsChangedDetails } from './IssueChecklistsChangedDetails';
+import type { IssueCreatedDetails } from './IssueCreatedDetails';
+import type { IssueDeletedDetails } from './IssueDeletedDetails';
+import type { IssueDescriptionChangedDetails } from './IssueDescriptionChangedDetails';
+import type { IssueDueDateChangedDetails } from './IssueDueDateChangedDetails';
+import type { IssueMCExtension } from './IssueMCExtension';
+import type { IssueStatusChangedDetails } from './IssueStatusChangedDetails';
+import type { IssueTagsChangedDetails } from './IssueTagsChangedDetails';
+import type { IssueTitleChangedDetails } from './IssueTitleChangedDetails';
+import type { M2AbsenceItemApprovedContent } from './M2AbsenceItemApprovedContent';
+import type { M2AbsenceItemApproveDeletedContent } from './M2AbsenceItemApproveDeletedContent';
+import type { M2AbsenceItemContent } from './M2AbsenceItemContent';
+import type { M2AbsenceItemDeletedContent } from './M2AbsenceItemDeletedContent';
+import type { M2AbsenceItemUpdatedContent } from './M2AbsenceItemUpdatedContent';
+import type { M2BlogItemContent } from './M2BlogItemContent';
+import type { M2BlogItemPreview } from './M2BlogItemPreview';
+import type { M2ChannelArchivedItemDetails } from './M2ChannelArchivedItemDetails';
+import type { M2ChannelCreatedItemDetails } from './M2ChannelCreatedItemDetails';
+import type { M2ChannelFeedIntroItemDetails } from './M2ChannelFeedIntroItemDetails';
+import type { M2ChannelRestoredItemDetails } from './M2ChannelRestoredItemDetails';
+import type { M2DraftEditorAddedItemContent } from './M2DraftEditorAddedItemContent';
+import type { M2DraftEditorTeamAddedItemContent } from './M2DraftEditorTeamAddedItemContent';
+import type { M2ExternalStatusFailureItemContent } from './M2ExternalStatusFailureItemContent';
+import type { M2ExternalStatusSucceedItemContent } from './M2ExternalStatusSucceedItemContent';
+import type { M2MaintenanceActionContent } from './M2MaintenanceActionContent';
+import type { M2MemberContent } from './M2MemberContent';
+import type { M2MemberJoinsContent } from './M2MemberJoinsContent';
+import type { M2MemberLeavesContent } from './M2MemberLeavesContent';
+import type { M2MembershipContent } from './M2MembershipContent';
+import type { M2MembershipCreatedContent } from './M2MembershipCreatedContent';
+import type { M2MembershipRequestedContent } from './M2MembershipRequestedContent';
+import type { M2MembershipTerminatedContent } from './M2MembershipTerminatedContent';
+import type { M2PackageCreatedDetails } from './M2PackageCreatedDetails';
+import type { M2PackageDeletedDetails } from './M2PackageDeletedDetails';
+import type { M2PollContent } from './M2PollContent';
+import type { M2TaskExecutionFailureItemContent } from './M2TaskExecutionFailureItemContent';
+import type { M2TaskExecutionSucceedItemContent } from './M2TaskExecutionSucceedItemContent';
+import type { M2TextItemContent } from './M2TextItemContent';
+import type { M2UserLeftChannel } from './M2UserLeftChannel';
+import type { MCMessage } from './MCMessage';
+import type { MCMessageCommonDetails } from './MCMessageCommonDetails';
+import type { MembersAddedItemDetails } from './MembersAddedItemDetails';
+import type { MergeRequestBranchDeletedEvent } from './MergeRequestBranchDeletedEvent';
+import type { MergeRequestBranchRestoredEvent } from './MergeRequestBranchRestoredEvent';
+import type { MergeRequestMergedEvent } from './MergeRequestMergedEvent';
+import type { ReviewBranchTrackEvent } from './ReviewBranchTrackEvent';
+import type { ReviewCompletionStateChangedEvent } from './ReviewCompletionStateChangedEvent';
+import type { ReviewerChangedEvent } from './ReviewerChangedEvent';
+import type { ReviewRevisionsChangedEvent } from './ReviewRevisionsChangedEvent';
+import type { ReviewStateChangedEvent } from './ReviewStateChangedEvent';
+import type { ReviewTitleChangedEvent } from './ReviewTitleChangedEvent';
+import type { StickerContentDetails } from './StickerContentDetails';
+import type { TeamAddedItemDetails } from './TeamAddedItemDetails';
+
+export type M2ItemContentDetails = (M2ChannelCreatedItemDetails | M2ChannelRestoredItemDetails | M2MembershipContent | M2MembershipTerminatedContent | M2MembershipCreatedContent | M2MembershipRequestedContent | M2MemberContent | M2MemberJoinsContent | M2MemberLeavesContent | M2TaskExecutionSucceedItemContent | M2AbsenceItemDeletedContent | M2AbsenceItemUpdatedContent | M2AbsenceItemContent | M2ExternalStatusSucceedItemContent | M2UserLeftChannel | MCMessage | IssueDeletedDetails | IssueDescriptionChangedDetails | IssueAssigneeChangedDetails | IssueStatusChangedDetails | IssueTitleChangedDetails | IssueDueDateChangedDetails | IssueCreatedDetails | IssueTagsChangedDetails | IssueMCExtension | IssueChecklistsChangedDetails | IssueAttachmentsChangedDetails | M2TaskExecutionFailureItemContent | M2DraftEditorTeamAddedItemContent | TeamAddedItemDetails | M2MaintenanceActionContent | MembersAddedItemDetails | M2ChannelFeedIntroItemDetails | MCMessageCommonDetails | M2PollContent | M2TextItemContent | M2BlogItemPreview | M2BlogItemContent | StickerContentDetails | M2AbsenceItemApproveDeletedContent | M2AbsenceItemApprovedContent | M2DraftEditorAddedItemContent | M2ChannelArchivedItemDetails | M2PackageDeletedDetails | M2PackageCreatedDetails | M2ExternalStatusFailureItemContent | ReviewStateChangedEvent | MergeRequestMergedEvent | ReviewBranchTrackEvent | ReviewCompletionStateChangedEvent | CodeReviewDiscussionAddedFeedEvent | MergeRequestBranchDeletedEvent | CodeDiscussionAddedFeedEvent | ReviewerChangedEvent | ReviewTitleChangedEvent | ReviewRevisionsChangedEvent | MergeRequestBranchRestoredEvent);

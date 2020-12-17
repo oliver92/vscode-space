@@ -1,0 +1,329 @@
+{
+	"name": "vscode-space",
+	"displayName": "JB Space",
+	"description": "Visual Studio Code extension to explore and manage your JetBrains Space organization",
+	"version": "1.0.0",
+	"icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#167dff",
+    "theme": "dark"
+  },
+	"author": {
+    "name": "Oliver Tasevski",
+    "email": "oliver.tasevski92@gmail.com"
+	},
+	"publisher": "olivertasevski",
+	"homepage": "https://github.com/oliver92/vscode-space",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/oliver92/vscode-space.git"
+	},
+	"bugs": {
+		"url": "https://github.com/oliver92/vscode-space/issues"
+	},
+	"engines": {
+		"vscode": "^1.51.0"
+	},
+	"keywords": [
+		"space",
+		"jetbrains",
+		"jb"
+	],
+	"categories": [
+		"SCM Providers",
+		"Visualization",
+		"Other"
+	],
+	"main": "./dist/extension.js",
+	"activationEvents": [
+		"onCommand:jbspace.setCredentials",
+		"onView:jbspaceProjects"
+	],
+
+	
+	"contributes": {
+		"commands": [
+			{
+				"command": "jbspace.setCredentials",
+				"title": "JS Space: Set Token"
+			},
+			{
+				"command": "jbspaceProjects.refreshProjects",
+				"title": "Refresh",
+				"icon": {
+					"light": "media/icons/sync-solid.svg",
+					"dark": "media/icons/sync-solid.svg"
+				}
+			},
+			{
+				"command": "jbspaceProjects.createProject",
+				"title": "Create Project",
+				"icon": {
+					"light": "media/icons/plus-solid.svg",
+					"dark": "media/icons/plus-solid.svg"
+				}
+			},
+			{
+				"command": "jbspaceProjects.createRepository",
+				"title": "Create Repository",
+				"icon": {
+					"light": "media/icons/plus-solid.svg",
+					"dark": "media/icons/plus-solid.svg"
+				}
+			},
+			{
+				"command": "jbspaceProjects.cloneRepository",
+				"title": "Clone Repository",
+				"icon": {
+					"light": "media/icons/cloud-download-alt-solid.svg",
+					"dark": "media/icons/cloud-download-alt-solid.svg"
+				}
+			},
+			{
+				"command": "jbspaceProjects.deleteRepository",
+				"title": "Delete Repository",
+				"icon": {
+					"light": "media/icons/trash-alt.svg",
+					"dark": "media/icons/trash-alt.svg"
+				}
+			},
+			{
+				"command": "jbspaceProjects.createIssue",
+				"title": "Create Issue",
+				"icon": {
+					"light": "media/icons/plus-solid.svg",
+					"dark": "media/icons/plus-solid.svg"
+				}
+			},
+			{
+				"command": "jbspaceProjects.deleteIssue",
+				"title": "Delete Issue",
+				"icon": {
+					"light": "media/icons/trash-alt.svg",
+					"dark": "media/icons/trash-alt.svg"
+				}
+			},
+			{
+				"command": "jbspaceProjects.markIssueResolved",
+				"title": "Mark Resolved",
+				"icon": {
+					"light": "media/icons/check-double-solid.svg",
+					"dark": "media/icons/check-double-solid.svg"
+				}
+			},
+			{
+				"command": "jbspaceProjects.markIssueUnresolved",
+				"title": "Mark Unresolved",
+				"icon": {
+					"light": "media/icons/undo-alt-solid.svg",
+					"dark": "media/icons/undo-alt-solid.svg"
+				}
+			},
+			{
+				"command": "jbspaceTodos.refreshTodos",
+				"title": "Refresh",
+				"icon": {
+					"light": "media/icons/sync-solid.svg",
+					"dark": "media/icons/sync-solid.svg"
+				}
+			},
+			{
+				"command": "jbspaceTodos.createTodo",
+				"title": "Create TO-DO",
+				"icon": {
+					"light": "media/icons/plus-solid.svg",
+					"dark": "media/icons/plus-solid.svg"
+				}
+			},
+			{
+				"command": "jbspaceTodos.deleteTodo",
+				"title": "Delete TO-DO",
+				"icon": {
+					"light": "media/icons/trash-alt.svg",
+					"dark": "media/icons/trash-alt.svg"
+				}
+			},
+			{
+				"command": "jbspaceTodos.markTodoClosed",
+				"title": "Mark Done",
+				"icon": {
+					"light": "media/icons/check-double-solid.svg",
+					"dark": "media/icons/check-double-solid.svg"
+				}
+			},
+			{
+				"command": "jbspaceTodos.markTodoOpen",
+				"title": "Mark Opened",
+				"icon": {
+					"light": "media/icons/undo-alt-solid.svg",
+					"dark": "media/icons/undo-alt-solid.svg"
+				}
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "jbspaceProjects.refreshProjects",
+					"when": "view == jbspaceProjects",
+					"group": "navigation"
+				},
+				{
+					"command": "jbspaceProjects.createProject",
+					"when": "view == jbspaceProjects",
+					"group": "navigation"
+				},
+				{
+					"command": "jbspaceTodos.refreshTodos",
+					"when": "view == jbspaceTodos",
+					"group": "navigation"
+				},
+				{
+					"command": "jbspaceTodos.createTodo",
+					"when": "view == jbspaceTodos",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "jbspaceProjects.createRepository",
+					"when": "view == jbspaceProjects && viewItem == repositories",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceProjects.cloneRepository",
+					"when": "view == jbspaceProjects && viewItem == repository",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceProjects.deleteRepository",
+					"when": "view == jbspaceProjects && viewItem == repository",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceProjects.createIssue",
+					"when": "view == jbspaceProjects && viewItem == issues",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceProjects.deleteIssue",
+					"when": "view == jbspaceProjects && viewItem == issue-unresolved",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceProjects.deleteIssue",
+					"when": "view == jbspaceProjects && viewItem == issue-resolved",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceProjects.markIssueResolved",
+					"when": "view == jbspaceProjects && viewItem == issue-unresolved",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceProjects.markIssueUnresolved",
+					"when": "view == jbspaceProjects && viewItem == issue-resolved",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceTodos.deleteTodo",
+					"when": "view == jbspaceTodos && viewItem == todo-open",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceTodos.deleteTodo",
+					"when": "view == jbspaceTodos && viewItem == todo-closed",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceTodos.markTodoClosed",
+					"when": "view == jbspaceTodos && viewItem == todo-open",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceTodos.markTodoOpen",
+					"when": "view == jbspaceTodos && viewItem == todo-closed",
+					"group": "inline"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "jbspaceWelcome",
+				"contents": "Welcome to the [Jetbrains Space](https://www.jetbrains.com/space/) VSCode extension.\n In order to use the extension you will need to enter an auth token.\n You can create this token by going to your Profile -> Security Settings -> Personal Tokens in your Space application. Once you have generated the token return here.\n [Enter Token](command:jbspace.setCredentials)",
+				"when": "jbspaceViewsConfig.showWelcome == true"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "jbspace",
+					"title": "JB Space",
+					"icon": "media/logo.svg"
+				}
+			]
+		},
+		"views": {
+			"jbspace": [
+				{
+					"id": "jbspaceWelcome",
+					"name": "Welcome",
+					"icon": "media/logo.svg",
+					"contextualTitle": "Welcome",
+					"when": "jbspaceViewsConfig.showWelcome == true"
+				},
+				{
+					"id": "jbspaceProjects",
+					"name": "Projects",
+					"icon": "media/logo.svg",
+					"contextualTitle": "Projects",
+					"when": "jbspaceViewsConfig.showWelcome == false"
+				},
+				{
+					"id": "jbspaceTodos",
+					"name": "To-Do",
+					"icon": "media/logo.svg",
+					"contextualTitle": "To-Do",
+					"when": "jbspaceViewsConfig.showWelcome == false"
+				}
+			]
+		}
+	},
+
+
+	"scripts": {
+		"vscode:prepublish": "npm run package",
+		"compile": "webpack --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
+		"watch": "webpack --watch --devtool nosources-source-map --config ./build/node-extension.webpack.config.js",
+		"package": "webpack --mode production --config ./build/node-extension.webpack.config.js",
+		"test-compile": "tsc -p ./",
+		"test-watch": "tsc -watch -p ./",
+		"pretest": "npm run test-compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js",
+		"generate": "openapi -i ./space-open-api.json -o ./src/space/open-api --client node"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.4",
+		"@types/node": "^12.11.7",
+		"@types/vscode": "^1.51.0",
+		"@typescript-eslint/eslint-plugin": "^4.9.0",
+		"@typescript-eslint/parser": "^4.9.0",
+		"eslint": "^7.15.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"openapi-typescript-codegen": "^0.7.0",
+		"ts-loader": "^8.0.11",
+		"typescript": "^4.1.2",
+		"vscode-test": "^1.4.1",
+		"webpack": "^5.10.0",
+		"webpack-cli": "^4.2.0"
+	},
+	"dependencies": {
+		"@types/form-data": "^2.5.0",
+		"@types/node-fetch": "^2.5.7",
+		"form-data": "^3.0.0",
+		"node-fetch": "^2.6.1"
+	}
+}
