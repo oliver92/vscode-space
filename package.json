@@ -250,7 +250,7 @@
 		"viewsWelcome": [
 			{
 				"view": "jbspaceWelcome",
-				"contents": "Welcome to the [Jetbrains Space](https://www.jetbrains.com/space/) VSCode extension.\n In order to use the extension you will need to enter an auth token.\n You can create this token by going to your Profile -> Security Settings -> Personal Tokens in your Space application. Once you have generated the token return here.\n [Enter Token](command:jbspace.setCredentials)",
+				"contents": "Welcome to the [Jetbrains Space](https://www.jetbrains.com/space/) VSCode extension.\n In order to use the extension you will need to enter an auth token.\n You can create this token by going to your Space Profile and selecting 'Preferences' -> 'Authentication' -> 'Personal Tokens' -> 'New Personal Token'. Be sure to give the token 'Full Access'. Once you have generated the token return here.\n [Enter Token](command:jbspace.setCredentials)",
 				"when": "jbspaceViewsConfig.showWelcome == true"
 			}
 		],
