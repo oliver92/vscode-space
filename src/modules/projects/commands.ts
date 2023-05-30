@@ -124,4 +124,21 @@ export default class ProjectCommands {
       vscode.window.showErrorMessage(e.message)
     }
   }
+
+  async setToken(context: vscode.ExtensionContext) {
+    let url = await vscode.window.showInputBox({
+      placeHolder: "ex. https://organization.jetbrains.space",
+      prompt: "URL of your JB Space"
+    });
+    const token = await vscode.window.showInputBox({placeHolder: "Token", prompt: "Enter/Paste your Token here"});
+    if (url !== undefined && token !== undefined) {
+      url = url.endsWith("/") ? (url + "api/http") : (url + "/api/http");
+      context.globalState.update('vscode-jb-space.url', url);
+      context.globalState.update('vscode-jb-space.token', token);
+      OpenAPI.BASE = url;
+      OpenAPI.TOKEN = token;
+      vscode.commands.executeCommand('setContext', 'jbspaceViewsConfig.showWelcome', false);
+    }
+  }
+
 }
