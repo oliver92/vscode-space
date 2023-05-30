@@ -139,6 +139,14 @@ export default class ProjectCommands {
       OpenAPI.TOKEN = token;
       vscode.commands.executeCommand('setContext', 'jbspaceViewsConfig.showWelcome', false);
     }
+  }
 
+  clearToken = async(context: vscode.ExtensionContext) => {
+    const site = context.globalState.get('vscode-jb-space.url');
+    context.globalState.update('vscode-jb-space.url', undefined);
+    context.globalState.update('vscode-jb-space.token', undefined);
+    OpenAPI.BASE = "/";
+    OpenAPI.TOKEN = undefined;
+    vscode.window.showInformationMessage(`Logged out of ${site}`);
   }
 }

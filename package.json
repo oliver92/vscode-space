@@ -46,7 +46,11 @@
 		"commands": [
 			{
 				"command": "jbspace.setCredentials",
-				"title": "JS Space: Set Token"
+				"title": "JB Space: Set Token"
+			},
+			{
+				"command": "jbspace.clearCredentials",
+				"title": "JB Space: Logout"
 			},
 			{
 				"command": "jbspaceProjects.refreshProjects",

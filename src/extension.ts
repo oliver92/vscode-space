@@ -19,20 +19,25 @@ export function activate(context: vscode.ExtensionContext) {
 
 	OpenAPI.BASE = context.globalState.get('vscode-jb-space.url') ?? "localhost";
 	OpenAPI.TOKEN = context.globalState.get('vscode-jb-space.token');
-	if(OpenAPI.TOKEN !== undefined) {
-		vscode.commands.executeCommand('setContext', 'jbspaceViewsConfig.showWelcome', false);
+
+	const refreshWorkspace = () => {
 		projectsProvider.refresh();
 		todosProvider.refresh();
+	}
+
+	if(OpenAPI.TOKEN !== undefined) {
+		vscode.commands.executeCommand('setContext', 'jbspaceViewsConfig.showWelcome', false);
+		refreshWorkspace();
 	}
 
 	const registerCommand = (name: string, fn: any, ...extraArgs: any[]) =>
 		vscode.commands.registerCommand(name, (args) => fn(args, ...extraArgs), fn)
 
+
 	const vsCommands = [
-		registerCommand('jbspace.setCredentials', async () => projectsCommands.setToken(context).then(() => {
-			projectsProvider.refresh();
-			todosProvider.refresh();
-		})),
+		// Extension commands
+		registerCommand('jbspace.setCredentials', async () => projectsCommands.setToken(context).then(refreshWorkspace)),
+        registerCommand('jbspace.clearCredentials', async () => projectsCommands.clearToken(context).then(refreshWorkspace)),
 
 		// Project commands
 		registerCommand('jbspaceProjects.refreshProjects', projectsProvider.refresh),
@@ -56,7 +61,7 @@ export function activate(context: vscode.ExtensionContext) {
 		registerCommand('jbspaceTodos.deleteTodo', todosCommands.deleteTodo),
 		registerCommand('jbspaceTodos.markTodoClosed', todosCommands.markTodoClosed),
 		registerCommand('jbspaceTodos.markTodoOpen', todosCommands.markTodoOpen),
-	]
+	];
 
 	vsCommands.map((command) => context.subscriptions.push(command));
 }
