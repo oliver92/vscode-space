@@ -47,10 +47,12 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(createProjectCmd);
 
 	const createRepoCmd = vscode.commands.registerCommand('jbspaceProjects.createRepository', (args) => projectsCommands.createRepository(args));
-	const cloneRepoCmd = vscode.commands.registerCommand('jbspaceProjects.cloneRepository', (args) => projectsCommands.cloneRepository(args));
+	const cloneRepoWithHttpCmd = vscode.commands.registerCommand('jbspaceProjects.cloneRepositoryWithHttp', (args) => projectsCommands.cloneRepository(args));
+	const cloneRepoWithSshCmd = vscode.commands.registerCommand('jbspaceProjects.cloneRepositoryWithSsh', (args) => projectsCommands.cloneRepository(args, true));
 	const deleteRepoCmd = vscode.commands.registerCommand('jbspaceProjects.deleteRepository', (args) => projectsCommands.deleteRepository(args));
 	context.subscriptions.push(createRepoCmd);
-	context.subscriptions.push(cloneRepoCmd);
+	context.subscriptions.push(cloneRepoWithHttpCmd);
+	context.subscriptions.push(cloneRepoWithSshCmd);
 	context.subscriptions.push(deleteRepoCmd);
 
 	const createIssueCmd = vscode.commands.registerCommand('jbspaceProjects.createIssue', (args) => projectsCommands.createIssue(args));

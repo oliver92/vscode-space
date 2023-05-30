@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { IssueStatus, OpenAPI, ProjectKey, Service } from '../../api';
 import { ProjectsProvider } from './projects';
+import {RepositoryUrls} from "../../api/models/RepositoryUrls";
 
 export default class ProjectCommands {
 
@@ -40,9 +41,9 @@ export default class ProjectCommands {
       const defaultBranch = await vscode.window.showInputBox({placeHolder: "master", prompt: "Default branch (leave empty for master)"});
       if(!repositoryName) return;
       await Service.postService78(args.project.id, repositoryName, undefined, {
-        description: repositoryDescription, 
-        initialize: true, 
-        defaultBranch: defaultBranch, 
+        description: repositoryDescription,
+        initialize: true,
+        defaultBranch: defaultBranch,
         defaultSetup: true
       });
 
@@ -53,12 +54,14 @@ export default class ProjectCommands {
     }
   }
 
-  async cloneRepository(args: any) {
-    const companyName = OpenAPI.BASE.substr(0, OpenAPI.BASE.indexOf('.')).replace('https://', '').replace('http://', '');
-    const projectName = args.project.name.toLowerCase().split(" ").join("-");
-    const repositoryName = args.repository.name.toLowerCase().split(" ").join("-");
-    const url = `https://git.jetbrains.space/${companyName}/${projectName}/${repositoryName}.git`;
-    vscode.commands.executeCommand('git.clone', url);
+  async cloneRepository(args: any, useSsh:boolean = false) {
+    try {
+      const repositoryUrls = (await Service.getService163(args.project.id, args.repository.name) as RepositoryUrls);
+      const url = useSsh ? repositoryUrls.sshUrl : repositoryUrls.httpUrl;
+      vscode.commands.executeCommand('git.clone', url)
+    } catch (e) {
+      //Todo: add error handling/logging.
+    }
   }
 
   async deleteRepository(args: any) {
