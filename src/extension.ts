@@ -25,20 +25,20 @@ export function activate(context: vscode.ExtensionContext) {
 		todosProvider.refresh();
 	}
 
-	const setCredentialsCmd = vscode.commands.registerCommand('jbspace.setCredentials', async () => {
-		let url = await vscode.window.showInputBox({placeHolder: "ex. https://organization.jetbrains.space", prompt: "URL of your JB Space"});
-		const token = await vscode.window.showInputBox({placeHolder: "Token", prompt: "Enter/Paste your Token here"});
-		if(url !== undefined && token !== undefined) {
-			url = url.endsWith("/") ? (url + "api/http") : (url + "/api/http");
-			context.globalState.update('vscode-jb-space.url', url);
-			context.globalState.update('vscode-jb-space.token', token);
-			OpenAPI.BASE = url;
-			OpenAPI.TOKEN = token;
-			vscode.commands.executeCommand('setContext', 'jbspaceViewsConfig.showWelcome', false);
-			projectsProvider.refresh();
-			todosProvider.refresh();
-		}
-	});
+    const registerCommand = (name: string, fn: any, ...extraArgs: any[]) => {
+        console.log(`extra args: ${extraArgs}`)
+        return vscode.commands.registerCommand(
+            name,
+            (args) => fn(args, ...extraArgs)
+        )
+    }
+
+
+	const setCredentialsCmd = vscode.commands.registerCommand('jbspace.setCredentials', () => projectsCommands.setToken(context).then(() => {
+		projectsProvider.refresh();
+		todosProvider.refresh();
+	}));
+
 	context.subscriptions.push(setCredentialsCmd);
 
 	const refreshProjectsCmd = vscode.commands.registerCommand('jbspaceProjects.refreshProjects', () => projectsProvider.refresh());
