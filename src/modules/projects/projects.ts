@@ -109,7 +109,7 @@ export class ProjectsProvider implements vscode.TreeDataProvider<BasicTreeItem> 
     }
   }
 
-  getChecklistFields(depth: number): string {
+  getChecklistFields = (depth: number): string => {
     return `children(issue,id,checklistId,hasChildren,simpleDone,simpleText,${(depth === 0 ? "children" : this.getChecklistFields(depth -1))})`;
   }
 }

@@ -10,7 +10,7 @@ export default class ProjectCommands {
     this.projectProvider = projectProvider;
   }
 
-  async createProject() {
+  createProject = async () => {
     try {
       const projectKey = await vscode.window.showInputBox({placeHolder: "Key", prompt: "Enter Project Key"});
       const projectName = await vscode.window.showInputBox({placeHolder: "Name", prompt: "The name of the project"});
@@ -34,7 +34,7 @@ export default class ProjectCommands {
     }
   }
 
-  async createRepository(args: any) {
+  createRepository = async (args: any) => {
     try {
       const repositoryName = await vscode.window.showInputBox({placeHolder: "Name", prompt: "The name of the repository"});
       const repositoryDescription = await vscode.window.showInputBox({placeHolder: "Description", prompt: "Decription of the repository (can be empty)"});
@@ -54,7 +54,7 @@ export default class ProjectCommands {
     }
   }
 
-  async cloneRepository(args: any, useSsh:boolean = false) {
+  cloneRepository = async (args: any, useSsh:boolean = false) => {
     try {
       const repositoryUrls = (await Service.getService163(args.project.id, args.repository.name) as RepositoryUrls);
       const url = useSsh ? repositoryUrls.sshUrl : repositoryUrls.httpUrl;
@@ -64,7 +64,7 @@ export default class ProjectCommands {
     }
   }
 
-  async deleteRepository(args: any) {
+  deleteRepository = async (args: any) => {
     try {
       const confirmation = await vscode.window.showQuickPick(["Yes", "No"], {placeHolder: "Are you sure you want to delete this repository?", canPickMany: false});
       if(!confirmation || confirmation === "No" || confirmation !== "Yes") return;
@@ -78,7 +78,7 @@ export default class ProjectCommands {
     }
   }
 
-  async createIssue(args: any) {
+  createIssue = async (args: any) => {
     try {
       const statuses = await Service.getService98(args.project.id);
       const title = await vscode.window.showInputBox({placeHolder: "Title", prompt: "The title of the issue"});
@@ -100,7 +100,7 @@ export default class ProjectCommands {
     }
   }
 
-  async markIssueResolved(args: any, resolved: boolean) {
+  markIssueResolved = async (args: any, resolved: boolean) => {
     try {
       await Service.postService72(args.project.id, args.issue.id, {resolved: resolved});
 
@@ -111,7 +111,7 @@ export default class ProjectCommands {
     }
   }
 
-  async deleteIssue(args: any) {
+  deleteIssue = async (args: any) => {
     //TODO: show are you sure dialog
     try {
       const confirmation = await vscode.window.showQuickPick(["Yes", "No"], {placeHolder: "Are you sure you want to delete this issue?", canPickMany: false});
@@ -125,7 +125,7 @@ export default class ProjectCommands {
     }
   }
 
-  async setToken(context: vscode.ExtensionContext) {
+  setToken = async (context: vscode.ExtensionContext) => {
     let url = await vscode.window.showInputBox({
       placeHolder: "ex. https://organization.jetbrains.space",
       prompt: "URL of your JB Space"
@@ -139,5 +139,6 @@ export default class ProjectCommands {
       OpenAPI.TOKEN = token;
       vscode.commands.executeCommand('setContext', 'jbspaceViewsConfig.showWelcome', false);
     }
+
   }
 }

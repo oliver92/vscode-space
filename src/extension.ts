@@ -26,10 +26,10 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 
 	const registerCommand = (name: string, fn: any, ...extraArgs: any[]) =>
-		vscode.commands.registerCommand(name, (args) => fn(args, ...extraArgs))
+		vscode.commands.registerCommand(name, (args) => fn(args, ...extraArgs), fn)
 
 	const vsCommands = [
-		registerCommand('jbspace.setCredentials', () => projectsCommands.setToken(context).then(() => {
+		registerCommand('jbspace.setCredentials', async () => projectsCommands.setToken(context).then(() => {
 			projectsProvider.refresh();
 			todosProvider.refresh();
 		})),
