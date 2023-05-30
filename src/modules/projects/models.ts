@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import BasicTreeItem from '../core/models';
-import { Checklist, Issue, IssueStatus, PlanItem, PR_Project, PR_RepositoryInfo } from '../../api/index';
+import {Checklist, Issue, IssueStatus, PlanItem, PR_Project, PR_RepositoryInfo} from '../../api';
 
 export class ProjectTreeItem extends BasicTreeItem {
   constructor(
@@ -85,8 +85,8 @@ export class IssueTreeItem extends BasicTreeItem {
   ) {
     super(issue.id, label, "issue", collapsibleState);
   }
-  iconPath = this.isResolved 
-    ? path.join(__filename, '..', '..', 'media', 'icons', 'check-circle.svg') 
+  iconPath = this.isResolved
+    ? path.join(__filename, '..', '..', 'media', 'icons', 'check-circle.svg')
     : path.join(__filename, '..', '..', 'media', 'icons', 'circle.svg')
   contextValue = "issue-" + (this.isResolved ? "resolved" : "unresolved");
 

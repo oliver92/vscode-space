@@ -1,20 +1,25 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import BasicTreeItem from '../core/models';
-import { Service } from '../../api/services/Service';
-import { ChecklistSorting, IssuesSorting, IssueStatus, OpenAPI, PlanItemChildren, PR_Project } from '../../api/index';
-import { ChecklistChildTreeItem, ChecklistTreeItem, IssueTreeItem, ProjectOptionTreeItem, ProjectTreeItem, RepositoryTreeItem } from './models';
+import {ChecklistSorting, IssuesSorting, IssueStatus, OpenAPI, PlanItemChildren, PR_Project, Service} from '../../api';
+import {
+  ChecklistChildTreeItem,
+  ChecklistTreeItem,
+  IssueTreeItem,
+  ProjectOptionTreeItem,
+  ProjectTreeItem,
+  RepositoryTreeItem
+} from './models';
 
 //TODO: add tree item commands
 export class ProjectsProvider implements vscode.TreeDataProvider<BasicTreeItem> {
-  
+
   private _onDidChangeTreeData: vscode.EventEmitter<BasicTreeItem | undefined | void> = new vscode.EventEmitter<BasicTreeItem | undefined | void>();
-	readonly onDidChangeTreeData: vscode.Event<BasicTreeItem | undefined | void> = this._onDidChangeTreeData.event;
+  readonly onDidChangeTreeData: vscode.Event<BasicTreeItem | undefined | void> = this._onDidChangeTreeData.event;
 
-  refresh(): void {
-		this._onDidChangeTreeData.fire();
-	}
-
+  refresh = (): void => {
+    this._onDidChangeTreeData.fire();
+  }
   getTreeItem(element: BasicTreeItem): vscode.TreeItem {
     return element;
   }
@@ -25,8 +30,8 @@ export class ProjectsProvider implements vscode.TreeDataProvider<BasicTreeItem> 
     if(element === undefined) {
       return Service.getService57().then((value) => {
         return value.data.map((project) => new ProjectTreeItem(
-          project.name, 
-          project, 
+          project.name,
+          project,
           vscode.TreeItemCollapsibleState.Collapsed
         ));
       });
@@ -45,9 +50,9 @@ export class ProjectsProvider implements vscode.TreeDataProvider<BasicTreeItem> 
     else if(element.type === "repositories") {
       if((element as ProjectOptionTreeItem).project.repos.length < 1) return Promise.resolve([new BasicTreeItem((element as ProjectOptionTreeItem).project.id + "-no-repositories", "No repositories", "no-result", vscode.TreeItemCollapsibleState.None)])
       return Promise.resolve((element as ProjectOptionTreeItem).project.repos.map((repo) => new RepositoryTreeItem(
-        repo.name, 
-        (element as ProjectOptionTreeItem).project, 
-        repo, 
+        repo.name,
+        (element as ProjectOptionTreeItem).project,
+        repo,
         vscode.TreeItemCollapsibleState.None
       )))
     }
@@ -56,9 +61,9 @@ export class ProjectsProvider implements vscode.TreeDataProvider<BasicTreeItem> 
       return Service.getService93((element as ProjectOptionTreeItem).project.id, null, 100, null, ChecklistSorting.UPDATED, true).then((value) => {
         if(value.data.length < 1) return Promise.resolve([new BasicTreeItem((element as ProjectOptionTreeItem).project.id + "-no-checklist", "Checklists empty", "no-result", vscode.TreeItemCollapsibleState.None)])
         return value.data.map((checklist) => new ChecklistTreeItem(
-          checklist.name, 
-          (element as ProjectOptionTreeItem).project, 
-          checklist, 
+          checklist.name,
+          (element as ProjectOptionTreeItem).project,
+          checklist,
           vscode.TreeItemCollapsibleState.Collapsed
         ));
       });
@@ -67,18 +72,18 @@ export class ProjectsProvider implements vscode.TreeDataProvider<BasicTreeItem> 
       return Service.getService95((element as ChecklistTreeItem).project.id, (element as ChecklistTreeItem).checklist.id, this.getChecklistFields(3)).then((value) => {
         if((value as PlanItemChildren[]).length < 1) return Promise.resolve([new BasicTreeItem((element as ChecklistTreeItem).checklist.id + "-no-checklist-children", "No further checklists in tree", "no-result", vscode.TreeItemCollapsibleState.None)])
         return (value as PlanItemChildren[]).pop()!.children.map((checklistChild) => new ChecklistChildTreeItem(
-          checklistChild.simpleText ?? checklistChild.id, 
-          (element as ChecklistTreeItem).project, 
-          checklistChild, 
+          checklistChild.simpleText ?? checklistChild.id,
+          (element as ChecklistTreeItem).project,
+          checklistChild,
           checklistChild.children && checklistChild.children.length > 0 ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None
         ));
       });
     }
     else if(element.type === "checklistChild") {
       return Promise.resolve((element as ChecklistChildTreeItem).checklistChild.children.map((checklistChild) => new ChecklistChildTreeItem(
-        checklistChild.simpleText ?? checklistChild.id, 
-        (element as ChecklistTreeItem).project, 
-        checklistChild, 
+        checklistChild.simpleText ?? checklistChild.id,
+        (element as ChecklistTreeItem).project,
+        checklistChild,
         checklistChild.children && checklistChild.children.length > 0 ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None
       )))
     }
@@ -90,10 +95,10 @@ export class ProjectsProvider implements vscode.TreeDataProvider<BasicTreeItem> 
         return Service.getService96((element as ProjectOptionTreeItem).project.id, [], (statuses as IssueStatus[]).map((status) => status.id), IssuesSorting.UPDATED, true).then((value) => {
           if(value.data.length < 1) return Promise.resolve([new BasicTreeItem((element as ProjectOptionTreeItem).project.id + "-no-issues", "No issues", "no-result", vscode.TreeItemCollapsibleState.None)])
           return value.data.map((issue) => new IssueTreeItem(
-            issue.title, 
-            (element as ProjectOptionTreeItem).project, 
-            issue, 
-            (statuses as IssueStatus[]), 
+            issue.title,
+            (element as ProjectOptionTreeItem).project,
+            issue,
+            (statuses as IssueStatus[]),
             vscode.TreeItemCollapsibleState.None
           ));
         });
@@ -104,10 +109,7 @@ export class ProjectsProvider implements vscode.TreeDataProvider<BasicTreeItem> 
     }
   }
 
-  getChecklistFields(depth: number): string {
+  getChecklistFields = (depth: number): string => {
     return `children(issue,id,checklistId,hasChildren,simpleDone,simpleText,${(depth === 0 ? "children" : this.getChecklistFields(depth -1))})`;
   }
 }
-
-
-

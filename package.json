@@ -41,12 +41,16 @@
 		"onView:jbspaceProjects"
 	],
 
-	
+
 	"contributes": {
 		"commands": [
 			{
 				"command": "jbspace.setCredentials",
-				"title": "JS Space: Set Token"
+				"title": "JB Space: Set Token"
+			},
+			{
+				"command": "jbspace.clearCredentials",
+				"title": "JB Space: Logout"
 			},
 			{
 				"command": "jbspaceProjects.refreshProjects",
@@ -72,14 +76,14 @@
 					"dark": "media/icons/plus-solid.svg"
 				}
 			},
-			{
-				"command": "jbspaceProjects.cloneRepository",
-				"title": "Clone Repository",
-				"icon": {
-					"light": "media/icons/cloud-download-alt-solid.svg",
-					"dark": "media/icons/cloud-download-alt-solid.svg"
-				}
-			},
+            {
+            "command": "jbspaceProjects.cloneRepositoryWithHttp",
+            "title": "Clone using Http"
+          },
+            {
+              "command": "jbspaceProjects.cloneRepositoryWithSsh",
+              "title": "Clone using SSH"
+            },
 			{
 				"command": "jbspaceProjects.deleteRepository",
 				"title": "Delete Repository",
@@ -161,6 +165,13 @@
 				}
 			}
 		],
+		"submenus": [
+			{
+				"id": "git.clone.submenu",
+				"label": "Clone Repository",
+				"icon": "media/icons/cloud-download-alt-solid.svg"
+			}
+		],
 		"menus": {
 			"view/title": [
 				{
@@ -190,11 +201,11 @@
 					"when": "view == jbspaceProjects && viewItem == repositories",
 					"group": "inline"
 				},
-				{
-					"command": "jbspaceProjects.cloneRepository",
-					"when": "view == jbspaceProjects && viewItem == repository",
-					"group": "inline"
-				},
+                {
+                "submenu": "git.clone.submenu",
+                "when": "view == jbspaceProjects && viewItem == repository",
+                "group": "inline"
+              },
 				{
 					"command": "jbspaceProjects.deleteRepository",
 					"when": "view == jbspaceProjects && viewItem == repository",
@@ -245,8 +256,21 @@
 					"when": "view == jbspaceTodos && viewItem == todo-closed",
 					"group": "inline"
 				}
+			],
+			"git.clone.submenu": [
+				{
+					"command": "jbspaceProjects.cloneRepositoryWithHttp",
+					"when": "view == jbspaceProjects && viewItem == repository",
+					"group": "inline"
+				},
+				{
+					"command": "jbspaceProjects.cloneRepositoryWithSsh",
+					"when": "view == jbspaceProjects && viewItem == repository",
+					"group": "inline"
+				}
 			]
 		},
+
 		"viewsWelcome": [
 			{
 				"view": "jbspaceWelcome",

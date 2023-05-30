@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { TodoItemRecord } from '../../api/models/TodoItemRecord';
+import {TodoContent, TodoItemRecord} from '../../api';
 import BasicTreeItem from '../core/models';
-import { TodoContent } from '../../api';
 
 export class TodoTreeItem extends BasicTreeItem {
   constructor(
@@ -11,7 +10,7 @@ export class TodoTreeItem extends BasicTreeItem {
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
   ) {
     super(todo.id, label, "todo", collapsibleState);
-    
+
     const kind = (this.todo.content as TodoContent).kind;
     switch(kind) {
       case "REGULAR": this.label = "📝 - " + this.label; break;
@@ -19,8 +18,8 @@ export class TodoTreeItem extends BasicTreeItem {
       case "ISSUE": this.label = "🐞 - " + this.label; break;
     }
   }
-  iconPath = !this.isOpen 
-    ? path.join(__filename, '..', '..', 'media', 'icons', 'check-circle.svg') 
+  iconPath = !this.isOpen
+    ? path.join(__filename, '..', '..', 'media', 'icons', 'check-circle.svg')
     : path.join(__filename, '..', '..', 'media', 'icons', 'circle.svg')
   contextValue = "todo-" + (this.isOpen ? "open" : "closed")
 
