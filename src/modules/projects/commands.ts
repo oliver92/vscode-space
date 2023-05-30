@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
-import { IssueStatus, OpenAPI, ProjectKey, Service } from '../../api';
-import { ProjectsProvider } from './projects';
+import {IssueStatus, OpenAPI, Service} from '../../api';
+import {ProjectsProvider} from './projects';
+import {RepositoryUrls} from "../../api/models/RepositoryUrls";
 
 export default class ProjectCommands {
 
@@ -9,7 +10,7 @@ export default class ProjectCommands {
     this.projectProvider = projectProvider;
   }
 
-  async createProject(args: any) {
+  createProject = async () => {
     try {
       const projectKey = await vscode.window.showInputBox({placeHolder: "Key", prompt: "Enter Project Key"});
       const projectName = await vscode.window.showInputBox({placeHolder: "Name", prompt: "The name of the project"});
@@ -22,7 +23,7 @@ export default class ProjectCommands {
         key: {key: projectKey},
         name: projectName,
         description: projectDescription,
-        private: isPrivate === "Yes" ? true : false,
+        private: isPrivate === "Yes",
         tags: tags ? tags.split(",") : undefined
       });
 
@@ -33,16 +34,16 @@ export default class ProjectCommands {
     }
   }
 
-  async createRepository(args: any) {
+  createRepository = async (args: any) => {
     try {
       const repositoryName = await vscode.window.showInputBox({placeHolder: "Name", prompt: "The name of the repository"});
       const repositoryDescription = await vscode.window.showInputBox({placeHolder: "Description", prompt: "Decription of the repository (can be empty)"});
       const defaultBranch = await vscode.window.showInputBox({placeHolder: "master", prompt: "Default branch (leave empty for master)"});
       if(!repositoryName) return;
       await Service.postService78(args.project.id, repositoryName, undefined, {
-        description: repositoryDescription, 
-        initialize: true, 
-        defaultBranch: defaultBranch, 
+        description: repositoryDescription,
+        initialize: true,
+        defaultBranch: defaultBranch,
         defaultSetup: true
       });
 
@@ -53,15 +54,17 @@ export default class ProjectCommands {
     }
   }
 
-  async cloneRepository(args: any) {
-    const companyName = OpenAPI.BASE.substr(0, OpenAPI.BASE.indexOf('.')).replace('https://', '').replace('http://', '');
-    const projectName = args.project.name.toLowerCase().split(" ").join("-");
-    const repositoryName = args.repository.name.toLowerCase().split(" ").join("-");
-    const url = `https://git.jetbrains.space/${companyName}/${projectName}/${repositoryName}.git`;
-    vscode.commands.executeCommand('git.clone', url);
+  cloneRepository = async (args: any, useSsh:boolean = false) => {
+    try {
+      const repositoryUrls = (await Service.getService163(args.project.id, args.repository.name) as RepositoryUrls);
+      const url = useSsh ? repositoryUrls.sshUrl : repositoryUrls.httpUrl;
+      vscode.commands.executeCommand('git.clone', url)
+    } catch (e) {
+      vscode.window.showErrorMessage(e.message);
+    }
   }
 
-  async deleteRepository(args: any) {
+  deleteRepository = async (args: any) => {
     try {
       const confirmation = await vscode.window.showQuickPick(["Yes", "No"], {placeHolder: "Are you sure you want to delete this repository?", canPickMany: false});
       if(!confirmation || confirmation === "No" || confirmation !== "Yes") return;
@@ -75,7 +78,7 @@ export default class ProjectCommands {
     }
   }
 
-  async createIssue(args: any) {
+  createIssue = async (args: any) => {
     try {
       const statuses = await Service.getService98(args.project.id);
       const title = await vscode.window.showInputBox({placeHolder: "Title", prompt: "The title of the issue"});
@@ -97,7 +100,7 @@ export default class ProjectCommands {
     }
   }
 
-  async markIssueResolved(args: any, resolved: boolean) {
+  markIssueResolved = async (args: any, resolved: boolean) => {
     try {
       await Service.postService72(args.project.id, args.issue.id, {resolved: resolved});
 
@@ -108,7 +111,7 @@ export default class ProjectCommands {
     }
   }
 
-  async deleteIssue(args: any) {
+  deleteIssue = async (args: any) => {
     //TODO: show are you sure dialog
     try {
       const confirmation = await vscode.window.showQuickPick(["Yes", "No"], {placeHolder: "Are you sure you want to delete this issue?", canPickMany: false});
@@ -120,5 +123,22 @@ export default class ProjectCommands {
     } catch(e) {
       vscode.window.showErrorMessage(e.message)
     }
+  }
+
+  setToken = async (context: vscode.ExtensionContext) => {
+    let url = await vscode.window.showInputBox({
+      placeHolder: "ex. https://organization.jetbrains.space",
+      prompt: "URL of your JB Space"
+    });
+    const token = await vscode.window.showInputBox({placeHolder: "Token", prompt: "Enter/Paste your Token here"});
+    if (url !== undefined && token !== undefined) {
+      url = url.endsWith("/") ? (url + "api/http") : (url + "/api/http");
+      context.globalState.update('vscode-jb-space.url', url);
+      context.globalState.update('vscode-jb-space.token', token);
+      OpenAPI.BASE = url;
+      OpenAPI.TOKEN = token;
+      vscode.commands.executeCommand('setContext', 'jbspaceViewsConfig.showWelcome', false);
+    }
+
   }
 }
