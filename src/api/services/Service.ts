@@ -172,6 +172,7 @@ import type { VcsHostingPassword } from '../models/VcsHostingPassword';
 import type { Weekday } from '../models/Weekday';
 import type { WorkingDaysSpec } from '../models/WorkingDaysSpec';
 import { request as __request } from '../core/request';
+import {RepositoryUrls} from "../models/RepositoryUrls";
 
 export class Service {
 
@@ -11596,6 +11597,29 @@ export class Service {
                 '$fields': fields,
             },
         });
+        return result.body;
+    }
+
+    /**
+     * Get repository url
+     * @param projectId
+     * @param repositoryName
+     * @result RepositoryUrls
+     * @result any Error
+     * @throws ApiError
+     */
+    public static async getService163(
+        projectId: string,
+        repositoryName: string
+    ): Promise<RepositoryUrls | {
+        error: string,
+        error_description: string
+    }> {
+        const result = await __request({
+            method: 'GET',
+            path: `/projects/${projectId}/repositories/${repositoryName}/url`,
+        });
+
         return result.body;
     }
 
