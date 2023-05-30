@@ -25,57 +25,42 @@ export function activate(context: vscode.ExtensionContext) {
 		todosProvider.refresh();
 	}
 
-    const registerCommand = (name: string, fn: any, ...extraArgs: any[]) => {
-        console.log(`extra args: ${extraArgs}`)
-        return vscode.commands.registerCommand(
-            name,
-            (args) => fn(args, ...extraArgs)
-        )
-    }
+	const registerCommand = (name: string, fn: any, ...extraArgs: any[]) =>
+		vscode.commands.registerCommand(name, (args) => fn(args, ...extraArgs))
 
+	const vsCommands = [
+		registerCommand('jbspace.setCredentials', () => projectsCommands.setToken(context).then(() => {
+			projectsProvider.refresh();
+			todosProvider.refresh();
+		})),
 
-	const setCredentialsCmd = vscode.commands.registerCommand('jbspace.setCredentials', () => projectsCommands.setToken(context).then(() => {
-		projectsProvider.refresh();
-		todosProvider.refresh();
-	}));
+		// Project commands
+		registerCommand('jbspaceProjects.refreshProjects', projectsProvider.refresh),
+		registerCommand('jbspaceProjects.createProject', projectsCommands.createProject),
 
-	context.subscriptions.push(setCredentialsCmd);
+		// Repository commands
+		registerCommand('jbspaceProjects.createRepository', projectsCommands.createRepository),
+		registerCommand('jbspaceProjects.cloneRepositoryWithHttp', projectsCommands.cloneRepository),
+		registerCommand('jbspaceProjects.cloneRepositoryWithSsh', projectsCommands.cloneRepository, true),
+		registerCommand('jbspaceProjects.deleteRepository', projectsCommands.deleteRepository),
 
-	const refreshProjectsCmd = vscode.commands.registerCommand('jbspaceProjects.refreshProjects', () => projectsProvider.refresh());
-	const createProjectCmd = vscode.commands.registerCommand('jbspaceProjects.createProject', (args) => projectsCommands.createProject(args));
-	context.subscriptions.push(refreshProjectsCmd);
-	context.subscriptions.push(createProjectCmd);
+		// Issues commands
+		registerCommand('jbspaceProjects.createIssue', projectsCommands.createIssue),
+		registerCommand('jbspaceProjects.markIssueResolved', projectsCommands.markIssueResolved, true),
+		registerCommand('jbspaceProjects.markIssueUnresolved', projectsCommands.markIssueResolved, false),
+		registerCommand('jbspaceProjects.deleteIssue', projectsCommands.deleteIssue),
 
-	const createRepoCmd = vscode.commands.registerCommand('jbspaceProjects.createRepository', (args) => projectsCommands.createRepository(args));
-	const cloneRepoWithHttpCmd = vscode.commands.registerCommand('jbspaceProjects.cloneRepositoryWithHttp', (args) => projectsCommands.cloneRepository(args));
-	const cloneRepoWithSshCmd = vscode.commands.registerCommand('jbspaceProjects.cloneRepositoryWithSsh', (args) => projectsCommands.cloneRepository(args, true));
-	const deleteRepoCmd = vscode.commands.registerCommand('jbspaceProjects.deleteRepository', (args) => projectsCommands.deleteRepository(args));
-	context.subscriptions.push(createRepoCmd);
-	context.subscriptions.push(cloneRepoWithHttpCmd);
-	context.subscriptions.push(cloneRepoWithSshCmd);
-	context.subscriptions.push(deleteRepoCmd);
+		// Todos commands
+		registerCommand('jbspaceTodos.refreshTodos', todosProvider.refresh),
+		registerCommand('jbspaceTodos.createTodo', todosCommands.createTodo),
+		registerCommand('jbspaceTodos.deleteTodo', todosCommands.deleteTodo),
+		registerCommand('jbspaceTodos.markTodoClosed', todosCommands.markTodoClosed),
+		registerCommand('jbspaceTodos.markTodoOpen', todosCommands.markTodoOpen),
+	];
 
-	const createIssueCmd = vscode.commands.registerCommand('jbspaceProjects.createIssue', (args) => projectsCommands.createIssue(args));
-	const resolveIssueCmd = vscode.commands.registerCommand('jbspaceProjects.markIssueResolved', (args) => projectsCommands.markIssueResolved(args, true));
-	const unresolveIssueCmd = vscode.commands.registerCommand('jbspaceProjects.markIssueUnresolved', (args) => projectsCommands.markIssueResolved(args, false));
-	const deleteIssueCmd = vscode.commands.registerCommand('jbspaceProjects.deleteIssue', (args) => projectsCommands.deleteIssue(args));
-	context.subscriptions.push(createIssueCmd);
-	context.subscriptions.push(resolveIssueCmd);
-	context.subscriptions.push(unresolveIssueCmd);
-	context.subscriptions.push(deleteIssueCmd);
-
-
-	const refreshTodosCmd = vscode.commands.registerCommand('jbspaceTodos.refreshTodos', () => todosProvider.refresh());
-	const createTodoCmd = vscode.commands.registerCommand('jbspaceTodos.createTodo', (args) => todosCommands.createTodo(args));
-	context.subscriptions.push(refreshTodosCmd);
-	context.subscriptions.push(createTodoCmd);
-
-	const deleteTodoCmd = vscode.commands.registerCommand('jbspaceTodos.deleteTodo', (args) => todosCommands.deleteTodo(args));
-	const closeTodoCmd = vscode.commands.registerCommand('jbspaceTodos.markTodoClosed', (args) => todosCommands.markTodoClosed(args));
-	const openTodoCmd = vscode.commands.registerCommand('jbspaceTodos.markTodoOpen', (args) => todosCommands.markTodoOpen(args));
-	context.subscriptions.push(deleteTodoCmd);
-	context.subscriptions.push(closeTodoCmd);
-	context.subscriptions.push(openTodoCmd);
+	for (const command of vsCommands) {
+		context.subscriptions.push(command);
+	}
 }
 
 // this method is called when your extension is deactivated
