@@ -60,7 +60,7 @@ export default class ProjectCommands {
       const url = useSsh ? repositoryUrls.sshUrl : repositoryUrls.httpUrl;
       vscode.commands.executeCommand('git.clone', url)
     } catch (e) {
-      //Todo: add error handling/logging.
+      vscode.window.showErrorMessage(e.message);
     }
   }
 
