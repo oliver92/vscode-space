@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { OpenAPI } from './api/index';
+import { OpenAPI } from './api';
 import { ProjectsProvider } from './modules/projects/projects';
 import ProjectCommands from './modules/projects/commands';
 import { TodosProvider } from './modules/todos/todos';
@@ -56,11 +56,9 @@ export function activate(context: vscode.ExtensionContext) {
 		registerCommand('jbspaceTodos.deleteTodo', todosCommands.deleteTodo),
 		registerCommand('jbspaceTodos.markTodoClosed', todosCommands.markTodoClosed),
 		registerCommand('jbspaceTodos.markTodoOpen', todosCommands.markTodoOpen),
-	];
+	]
 
-	for (const command of vsCommands) {
-		context.subscriptions.push(command);
-	}
+	vsCommands.map((command) => context.subscriptions.push(command));
 }
 
 // this method is called when your extension is deactivated
