@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { OpenAPI, Service } from '../../api';
-import { TodosProvider } from './todos';
+import {Service} from '../../api';
+import {TodosProvider} from './todos';
 
 export default class TodoCommands {
 
@@ -9,7 +9,7 @@ export default class TodoCommands {
     this.todosProvider = todosProvider;
   }
 
-  async createTodo(args: any) {
+  async createTodo() {
     try {
       const text = await vscode.window.showInputBox({placeHolder: "Text", prompt: "Enter TO-DO text"});
       const dueDate = await vscode.window.showInputBox({value: this._formatDate(new Date()), prompt: "Due date (optional)"});

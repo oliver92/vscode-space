@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { IssueStatus, OpenAPI, ProjectKey, Service } from '../../api';
-import { ProjectsProvider } from './projects';
+import {IssueStatus, OpenAPI, Service} from '../../api';
+import {ProjectsProvider} from './projects';
 import {RepositoryUrls} from "../../api/models/RepositoryUrls";
 
 export default class ProjectCommands {
@@ -10,7 +10,7 @@ export default class ProjectCommands {
     this.projectProvider = projectProvider;
   }
 
-  async createProject(args: any) {
+  async createProject() {
     try {
       const projectKey = await vscode.window.showInputBox({placeHolder: "Key", prompt: "Enter Project Key"});
       const projectName = await vscode.window.showInputBox({placeHolder: "Name", prompt: "The name of the project"});
@@ -23,7 +23,7 @@ export default class ProjectCommands {
         key: {key: projectKey},
         name: projectName,
         description: projectDescription,
-        private: isPrivate === "Yes" ? true : false,
+        private: isPrivate === "Yes",
         tags: tags ? tags.split(",") : undefined
       });
 
@@ -140,5 +140,4 @@ export default class ProjectCommands {
       vscode.commands.executeCommand('setContext', 'jbspaceViewsConfig.showWelcome', false);
     }
   }
-
 }

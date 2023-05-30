@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 import BasicTreeItem from '../core/models';
-import { OpenAPI } from '../../api/core/OpenAPI';
-import { Service } from '../../api/services/Service';
-import { TodoTreeItem } from './models';
+import {OpenAPI, Service} from '../../api';
+import {TodoTreeItem} from './models';
 
 export class TodosProvider implements vscode.TreeDataProvider<BasicTreeItem> {
 
@@ -16,14 +15,14 @@ export class TodosProvider implements vscode.TreeDataProvider<BasicTreeItem> {
   getTreeItem(element: BasicTreeItem): vscode.TreeItem {
     return element;
   }
-  
+
   getChildren(element?: BasicTreeItem): Thenable<BasicTreeItem[]> {
     if(OpenAPI.TOKEN === undefined) return Promise.resolve([]);
     if(element === undefined) {
       return Service.getService158().then((value) => {
         let todos = value.data.map((todo) => new TodoTreeItem(
-          todo.content.text, 
-          todo, 
+          todo.content.text,
+          todo,
           vscode.TreeItemCollapsibleState.None
         ));
         todos.sort((a, b) => {

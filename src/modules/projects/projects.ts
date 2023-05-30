@@ -1,9 +1,15 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import BasicTreeItem from '../core/models';
-import { Service } from '../../api';
-import { ChecklistSorting, IssuesSorting, IssueStatus, OpenAPI, PlanItemChildren, PR_Project } from '../../api';
-import { ChecklistChildTreeItem, ChecklistTreeItem, IssueTreeItem, ProjectOptionTreeItem, ProjectTreeItem, RepositoryTreeItem } from './models';
+import {ChecklistSorting, IssuesSorting, IssueStatus, OpenAPI, PlanItemChildren, PR_Project, Service} from '../../api';
+import {
+  ChecklistChildTreeItem,
+  ChecklistTreeItem,
+  IssueTreeItem,
+  ProjectOptionTreeItem,
+  ProjectTreeItem,
+  RepositoryTreeItem
+} from './models';
 
 //TODO: add tree item commands
 export class ProjectsProvider implements vscode.TreeDataProvider<BasicTreeItem> {
